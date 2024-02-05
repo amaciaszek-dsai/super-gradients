@@ -17,7 +17,7 @@ gpu = modal.gpu.T4(count=2)
 stub = modal.Stub(name="train_from_recipe")    
 
 # github authentication is required to access private repos
-image = Image.from_dockerfile("Dockerfile") \
+image = Image.from_dockerfile("Dockerfile", force_build=True) \
     .copy_local_dir("./src/super_gradients/recipes", "/root/recipes") \
     .pip_install(
     "git+https://github.com/amaciaszek-dsai/super-gradients.git@modal_ddp")
