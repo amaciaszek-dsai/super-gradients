@@ -20,7 +20,7 @@ stub = modal.Stub(name="train_from_recipe")
 image = Image.from_dockerfile("Dockerfile") \
     .copy_local_dir("./src/super_gradients/recipes", "/root/recipes") \
     .pip_install(
-    "github.com/amaciaszek-dsai/super-gradients.git@modal_ddp")
+    "git+https://github.com/amaciaszek-dsai/super-gradients.git@modal_ddp")
 
 logger = getLogger(__name__)
 
