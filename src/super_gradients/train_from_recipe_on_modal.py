@@ -7,18 +7,20 @@ For recipe's specific instructions and details refer to the recipe's configurati
 import os
 import hydra
 import modal
+import subprocess
 from logging import getLogger
 from modal import Image
 
 from super_gradients import Trainer, init_trainer
 
 
-gpu = modal.gpu.T4(count=2)
+gpu = modal.gpu.H100(count=4)
 stub = modal.Stub(name="train_from_recipe")    
 
 # github authentication is required to access private repos
 image = Image.from_dockerfile("Dockerfile", force_build=True) \
     .copy_local_dir("./src/super_gradients/recipes", "/root/recipes") \
+    .copy_local_file("./src/super_gradients/launch_workaround_modal.py", "root/launch_workaround_modal.py") \
     .pip_install(
     "git+https://github.com/amaciaszek-dsai/super-gradients.git@modal_ddp")
 
@@ -26,13 +28,8 @@ logger = getLogger(__name__)
 
 @stub.function(image=image, gpu=gpu)
 def _main() -> None:
-    with hydra.initialize(config_path="recipes"):
-        cfg = hydra.compose(config_name="cifar10_resnet")  # config hardcoded for testing
-        cfg.training_hyperparams.max_epochs = 1
-        cfg.multi_gpu = "DDP"  # DDP multi-gpu training does not work currently in this scenario
-        cfg.num_gpus = 2
-    logger.info(f"Config:\n{cfg}")
-    Trainer.train_from_config(cfg)
+    if exit_code := subprocess.call(["python", "launch_workaround_modal.py"]):
+        exit(exit_code)
 
 @stub.local_entrypoint()
 def main() -> None:
