@@ -14,7 +14,7 @@ from modal import Image
 from super_gradients import Trainer, init_trainer
 
 
-gpu = modal.gpu.H100(count=4)
+gpu = modal.gpu.A10G(count=4)
 stub = modal.Stub(name="train_from_recipe")    
 
 # github authentication is required to access private repos
