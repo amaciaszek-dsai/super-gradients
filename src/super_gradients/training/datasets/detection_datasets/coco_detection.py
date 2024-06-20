@@ -42,7 +42,7 @@ class COCODetectionDataset(COCOFormatDetectionDataset):
     def __init__(
         self,
         json_file: str = "instances_train2017.json",
-        subdir: str = "images/train2017",
+        images_dir: str = "PNG",
         *args,
         **kwargs,
     ):
@@ -56,4 +56,9 @@ class COCODetectionDataset(COCOFormatDetectionDataset):
         kwargs:
             all_classes_list: all classes list, default is COCO_DETECTION_CLASSES_LIST.
         """
-        super().__init__(json_annotation_file=os.path.join("annotations", json_file), images_dir=subdir, *args, **kwargs)
+        kwargs.pop("subdir", None)
+        kwargs.pop("root", None)
+        if "json_annotation_file" in kwargs:
+            json_file = kwargs["json_annotation_file"]
+            kwargs.pop("json_annotation_file", None)
+        super().__init__(json_annotation_file=json_file, images_dir=images_dir, *args, **kwargs)

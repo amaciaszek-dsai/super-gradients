@@ -14,8 +14,10 @@ from modal import Image
 from super_gradients import Trainer, init_trainer
 
 
-gpu = modal.gpu.A10G(count=4)
-stub = modal.Stub(name="train_from_recipe")    
+gpu = modal.gpu.A10G(count=2)
+stub = modal.Stub(name="train_from_recipe")
+checkpoints_volume = modal.Volume.persisted("checkpoints")  # will be mounted to /root/modal_checkpoints in the modal environment
+data_volume = modal.Volume.persisted("coco")  # will be mounted to /root/data in the modal environment
 
 # github authentication is required to access private repos
 image = Image.from_dockerfile("Dockerfile", force_build=True) \
@@ -26,7 +28,7 @@ image = Image.from_dockerfile("Dockerfile", force_build=True) \
 
 logger = getLogger(__name__)
 
-@stub.function(image=image, gpu=gpu)
+@stub.function(image=image, gpu=gpu, volumes={"/root/modal_checkpoints": checkpoints_volume, "/data": data_volume})
 def _main() -> None:
     if exit_code := subprocess.call(["python", "launch_workaround_modal.py"]):
         exit(exit_code)
