@@ -25,7 +25,13 @@ resume: False
 
 dataset_params:
   train_dataloader_params:
-    batch_size: 32
+    batch_size: 16
+    num_workers: 16
+
+  val_dataloader_params:
+    batch_size: 16
+    num_workers: 16
+
 
 arch_params:
   num_classes: 80
