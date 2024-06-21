@@ -14,7 +14,7 @@ from modal import Image
 from super_gradients import Trainer, init_trainer
 
 
-gpu = modal.gpu.A10G(count=2)
+gpu = modal.gpu.H100(count=2)
 stub = modal.Stub(name="train_from_recipe")
 checkpoints_volume = modal.Volume.persisted("checkpoints")  # will be mounted to /root/modal_checkpoints in the modal environment
 data_volume = modal.Volume.persisted("coco")  # will be mounted to /root/data in the modal environment
