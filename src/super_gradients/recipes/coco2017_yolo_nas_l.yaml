@@ -12,7 +12,7 @@
 defaults:
   - training_hyperparams: coco2017_yolo_nas_train_params
   - dataset_params: coco_detection_yolo_nas_dataset_params
-  - arch_params: yolo_nas_s_arch_params
+  - arch_params: yolo_nas_l_arch_params
   - checkpoint_params: default_checkpoint_params
   - _self_
   - variable_setup
