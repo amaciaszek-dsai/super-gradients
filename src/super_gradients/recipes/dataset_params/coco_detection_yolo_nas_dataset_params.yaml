@@ -175,7 +175,7 @@ defaults:
   - coco_detection_dataset_params
 
 train_dataset_params:
-  data_dir: /mnt/ml-team/unstructured/DATA/coco
+  data_dir: /data/coco
   images_dir: images/train2017
   json_file: annotations/instances_train2017.json
   # enlarge: True
@@ -186,7 +186,7 @@ train_dataset_params:
   #   paragraphs_in_form: paragraphs_in_table
 
 val_dataset_params:
-  data_dir: /mnt/ml-team/unstructured/DATA/coco
+  data_dir: /data/coco
   images_dir: images/val2017
   json_file: annotations/instances_val2017.json
   # enlarge: True

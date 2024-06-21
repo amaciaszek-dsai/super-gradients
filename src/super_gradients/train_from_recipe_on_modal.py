@@ -28,7 +28,7 @@ image = Image.from_dockerfile("Dockerfile", force_build=True) \
 
 logger = getLogger(__name__)
 
-@stub.function(image=image, gpu=gpu, volumes={"/root/modal_checkpoints": checkpoints_volume, "/data": data_volume})
+@stub.function(image=image, gpu=gpu, volumes={"/root/modal_checkpoints": checkpoints_volume, "/data": data_volume}, timeout=86400)
 def _main() -> None:
     if exit_code := subprocess.call(["python", "launch_workaround_modal.py"]):
         exit(exit_code)
